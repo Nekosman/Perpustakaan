@@ -27,7 +27,7 @@ class PenerbitController extends Controller
 
        Penerbit::create($request->all());
 
-       return redirect()-> route('penerbit.index')->with('success', 'penerbit Created successfully');
+       return redirect()-> route('admin/publishers')->with('success', 'penerbit Created successfully');
     }
 
     public function edit(Penerbit $penerbit)
@@ -44,7 +44,7 @@ class PenerbitController extends Controller
 
         $penerbit->update($request->all());
 
-        return redirect()->route('penerbit.index')
+        return redirect()->route('admin/publishers')
             ->with('success', 'penerbit updated successfully.');
     }
 
@@ -52,7 +52,7 @@ class PenerbitController extends Controller
     {
         $penerbit->delete();
 
-        return redirect()->route('penerbit.index')
+        return redirect()->route('admin/publishers')
             ->with('success', 'Kategori deleted successfully.');
     }
     

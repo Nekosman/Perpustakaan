@@ -27,7 +27,7 @@ class KategoriController extends Controller
 
         Kategori::create($request->all());
 
-        return redirect()->route('kategori.index')
+        return redirect()->route('admin/categorys')
             ->with('success', 'Kategori created successfully.');
     }
 
@@ -45,7 +45,7 @@ class KategoriController extends Controller
 
         $kategori->update($request->all());
 
-        return redirect()->route('kategori.index')
+        return redirect()->route('admin/categorys')
             ->with('success', 'Kategori updated successfully.');
     }
 
@@ -53,7 +53,7 @@ class KategoriController extends Controller
     {
         $kategori->delete();
 
-        return redirect()->route('kategori.index')
+        return redirect()->route('admin/categorys')
             ->with('success', 'Kategori deleted successfully.');
     }
 }

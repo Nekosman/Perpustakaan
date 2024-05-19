@@ -30,7 +30,7 @@ class PengarangController extends Controller
 
         Pengarang::create($request->all());
 
-        return redirect()->route('pengarang.index')
+        return redirect()->route('admin/authors')
             ->with('success', 'Kategori created successfully.');
     }
 
@@ -49,7 +49,7 @@ class PengarangController extends Controller
 
         $pengarang->update($request->all());
 
-        return redirect()->route('pengarang.index')
+        return redirect()->route('admin/authors')
             ->with('success', 'pengarang updated successfully.');
     }
 
@@ -57,7 +57,7 @@ class PengarangController extends Controller
     {
         $pengarang->delete();
 
-        return redirect()->route('pengarang.index')
+        return redirect()->route('admin/authors')
             ->with('success', 'Penerbit deleted successfully.');
     }
 }
