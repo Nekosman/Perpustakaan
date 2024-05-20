@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ApprovalController;
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 
@@ -51,8 +52,8 @@ Route::controller(AuthController::class)->group(function(){
     Route::get('logout', 'logout')->middleware('auth')->name('logout');
 });
 
-Route::middleware(['auth', 'user-access:user'])->group(function(){
-    Route::get('/home', [HomeController::class, 'index'])->name('home');
+Route::middleware(['auth', 'user-access:siswa'])->group(function(){
+    Route::get('/siswa/home', [HomeController::class, 'index'])->name('siswa/home');
 });
 
 Route::middleware(['auth', 'user-access:admin'])->group(function(){
@@ -91,8 +92,15 @@ Route::middleware(['auth', 'user-access:admin'])->group(function(){
     Route::get('/admin/publishers/{penerbit}/edit', [PenerbitController::class, 'edit'])->name('admin/publishers/edit');
     Route::put('/admin/publishers/{penerbit}', [PenerbitController::class, 'update'])->name('admin/publishers/update');
     Route::delete('/admin/publishers/{penerbit}', [PenerbitController::class, 'destroy'])->name('admin/publishers/destroy');
+
+    //approval 
+    Route::get('/admin/approvals', [ApprovalController::class, 'index'])->name('admin.approvals');
+    Route::post('/admin/approvals/{id}/approve', [ApprovalController::class, 'approve'])->name('admin.approvals.approve');
     // Route::get('/admin/buku/create', [BukuController::class, 'create'])->name('admin/buku.create');
     // Route::post('/admin/buku', [BukuController::class, 'store'])->name('admin/buku.store');
 });
 
+Route::middleware(['auth', 'user-access:petugas'])->group(function(){
+    Route::get('/petugas/home', [HomeController::class, 'index'])->name('petugas/home');
+});
 // Route::post('/login',);

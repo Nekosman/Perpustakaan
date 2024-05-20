@@ -26,17 +26,18 @@ class AuthController extends Controller
         Validator::make($request->all(),[
             'name' => 'required',
             'email' => 'required|email',
-            'password' => 'required|confirmed'
+            'password' => 'required|confirmed',
+            'type' => 'required|string|in:siswa,admin,petugas' // Enum validation
         ])->validate();
 
         User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'type' => "0"
+            'type' => $request->type,
+            'is_approved' => $request->type == 'siswa' ? true : false 
         ]);
 
-        
         return redirect()->route('login');
     }
 
@@ -59,10 +60,17 @@ class AuthController extends Controller
 
         $request->session()->regenerate();
 
-        if (auth()->user()->type == 'admin') {
+        if (!auth()->user()->is_approved) {
+            Auth::logout();
+            return redirect()->route('login')->withErrors(['email' => 'Akun Anda belum disetujui oleh admin.']);
+        }
+
+        if (auth()->user()->type === 'admin') {
             return redirect()->route('admin/home');
-        } else{
-            return redirect()->route('home');
+        } elseif (auth()->user()->type === 'petugas') {
+            return redirect()->route('petugas/home');
+        } else {
+            return redirect()->route('siswa/home');
         }
     }
 

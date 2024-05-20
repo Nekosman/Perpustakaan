@@ -21,7 +21,7 @@
             <div class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
                 <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
                     <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-                        Create and account
+                        Create an account
                     </h1>
                     <form action="{{ route('register.save') }}" method="POST" class="space-y-4 md:space-y-6">
                         @csrf
@@ -48,9 +48,24 @@
                         </div>
                         <div>
                             <label for="confirm-password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Confirm password</label>
-                            <input type="confirm-password" name="password_confirmation" id="password_confirmation" placeholder="••••••••" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required="">
+                            <input type="password" name="password_confirmation" id="password_confirmation" placeholder="••••••••" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required="">
                             @error('password_confirmation')
                             <span class="text-red-600">{{ $message }}</span>
+                            @enderror
+                        </div>
+                        <div>
+                            <label class="font-weight-bold">Type User</label>
+                            <select class="form-control @error('type') is-invalid @enderror" name="type">
+                                <option value="siswa" {{ old('type') == 'siswa' ? 'selected' : '' }}>siswa</option>
+                                <option value="admin" {{ old('type') == 'admin' ? 'selected' : '' }}>admin</option>
+                                <option value="petugas" {{ old('type') == 'petugas' ? 'selected' : '' }}>petugas</option>
+                            </select>
+                            
+                            <!-- error message untuk jenis kelamin -->
+                            @error('type')
+                                <div class="alert alert-danger mt-2">
+                                    {{ $message }}
+                                </div>
                             @enderror
                         </div>
                         <div class="flex items-start">
