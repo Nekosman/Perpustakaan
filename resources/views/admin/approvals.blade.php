@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
+<div class="container mt-5">
     <h2>Pending Approvals</h2>
     @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>

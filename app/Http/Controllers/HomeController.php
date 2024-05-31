@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\buku;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -16,7 +18,13 @@ class HomeController extends Controller
     }
 
     public function adminHome(){
-        return view('dashboard');
+        $totalBooks = Buku::count();
+        $totalUsers = User::count();
+
+        return view('dashboard', compact('totalBooks', 'totalUsers'));
+    }
+    public function petugasHome(){
+        return view('dashboardp');
     }
 
     

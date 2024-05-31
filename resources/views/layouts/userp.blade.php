@@ -5,7 +5,7 @@
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>Skydash Admin</title>
+  <title>@yield('title')</title>
   <!-- plugins:css -->
   <link rel="stylesheet" href="{{ asset('vendors/feather/feather.css') }}">
 <link rel="stylesheet" href="{{ asset('vendors/ti-icons/css/themify-icons.css') }}">
@@ -121,7 +121,7 @@
       <nav class="sidebar sidebar-offcanvas" id="sidebar">
         <ul class="nav">
           <li class="nav-item">
-            <a class="nav-link" href="{{ route('admin/home') }}">
+            <a class="nav-link" href="{{ route('petugas/home') }}">
               <i class="icon-grid menu-icon"></i>
               <span class="menu-title">Dashboard</span>
             </a>
@@ -134,10 +134,10 @@
             </a>
             <div class="collapse" id="ui-basic">
               <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="{{ route ('admin/books') }}">tambah buku</a></li>
-                <li class="nav-item"> <a class="nav-link" href="{{ route ('admin/categorys') }}">tambah kategori</a></li>
-                <li class="nav-item"> <a class="nav-link" href="{{ route ('admin/authors') }}">tambah pengarang</a></li>
-                <li class="nav-item"> <a class="nav-link" href="{{ route ('admin/publishers') }}">tambah penerbit</a></li>
+                <li class="nav-item"> <a class="nav-link" href="{{ route ('petugas/books') }}">tambah buku</a></li>
+                <li class="nav-item"> <a class="nav-link" href="{{ route ('petugas/categorys') }}">tambah kategori</a></li>
+                <li class="nav-item"> <a class="nav-link" href="{{ route ('petugas/authors') }}">tambah pengarang</a></li>
+                <li class="nav-item"> <a class="nav-link" href="{{ route ('petugas/publishers') }}">tambah penerbit</a></li>
               </ul>
             </div>
           </li>
@@ -173,8 +173,7 @@
             </a>
             <div class="collapse" id="auth">
               <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="{{ route('admin.approvals') }}"> Approval users </a></li>
-                <li class="nav-item"> <a class="nav-link" href="{{ route('admin.userlist') }}"> User List </a></li>
+                <li class="nav-item"> <a class="nav-link" href="pages/samples/register.html"> Register </a></li>
               </ul>
             </div>
           </li>
@@ -188,9 +187,7 @@
         </ul>
       </nav>
       <!-- partial -->
-      
-        
-      
+      <div class="main-panel">
         @yield('content')
         <!-- content-wrapper ends -->
         <!-- partial:partials/_footer.html -->

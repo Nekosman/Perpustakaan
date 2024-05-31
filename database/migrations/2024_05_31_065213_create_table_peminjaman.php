@@ -11,15 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('pinjam', function (Blueprint $table) {
-            $table->id();
-            $table->string('id_buku');
-            $table->string('id_member');
-            $table->string('tanggal_peminjaman');
-            $table->string('tanggal_pengembalian');
-            $table->string('jenis');
+        Schema::create('table_peminjaman', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('bukus');
+            $table->string('users');
             $table->timestamps();
 
+            $table->engine = 'InnoDB';
         });
     }
 
@@ -28,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('pinjam');
+        Schema::dropIfExists('table_peminjaman');
     }
 };

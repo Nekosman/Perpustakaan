@@ -27,7 +27,7 @@ class AuthController extends Controller
             'name' => 'required',
             'email' => 'required|email',
             'password' => 'required|confirmed',
-            'type' => 'required|string|in:siswa,admin,petugas' // Enum validation
+            'type' => 'required|string|in:siswa,admin,petugas' 
         ])->validate();
 
         User::create([

@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends(Auth::user()->type == 'admin' ? 'layouts.app' : 'layouts.userp')
 @push('css')
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">

@@ -35,6 +35,7 @@ class BukuController extends Controller
             'pengarang_id' => 'required',
             'penerbit_id' => 'required',
             'tahun_terbit' => 'required',
+            'stock' => 'required',
             'kategori_id' => 'required',
         ]);
 
@@ -47,6 +48,7 @@ class BukuController extends Controller
             'pengarang_id' => $request->pengarang_id,
             'penerbit_id' => $request->penerbit_id,
             'tahun_terbit' => $request->tahun_terbit,
+            'stock' => $request->stock,
             'kategori_id' => $request->kategori_id
         ]);
 
@@ -71,6 +73,7 @@ class BukuController extends Controller
             'pengarang_id' => 'required',
             'penerbit_id' => 'required',
             'tahun_terbit' => 'required',
+            'stock' => 'required',
             'kategori_id' => 'required',
         ]);
 
@@ -87,6 +90,7 @@ class BukuController extends Controller
                 'pengarang_id' => $request->pengarang_id,
                 'penerbit_id' => $request->penerbit_id,
                 'tahun_terbit' => $request->tahun_terbit,
+                'stock' => $request->stock,
                 'kategori_id' => $request->kategori_id
             ]);
         } else {
@@ -95,6 +99,7 @@ class BukuController extends Controller
                 'pengarang_id' => $request->pengarang_id,
                 'penerbit_id' => $request->penerbit_id,
                 'tahun_terbit' => $request->tahun_terbit,
+                'stock' => $request->stock,
                 'kategori_id' => $request->kategori_id
             ]);
         }

@@ -11,6 +11,7 @@ use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\PenerbitController;
 use App\Http\Controllers\PengarangController;
 use App\Http\Controllers\PinjamController;
+use App\Http\Controllers\userController;
 use App\Models\pengarang;
 
 /*
@@ -96,11 +97,52 @@ Route::middleware(['auth', 'user-access:admin'])->group(function(){
     //approval 
     Route::get('/admin/approvals', [ApprovalController::class, 'index'])->name('admin.approvals');
     Route::post('/admin/approvals/{id}/approve', [ApprovalController::class, 'approve'])->name('admin.approvals.approve');
+
+    //list user
+    Route::get('/admin/userlist', [userController::class, 'index'])->name('admin.userlist');
+    Route::get('/admin/userlist/create', [userController::class, 'createAccount'])->name('admin.userlist.create');
+    Route::post('/admin/userlist', [userController::class, 'store'])->name('admin.userlist.store');
+    Route::delete('/admin/userlist/{user}', [userController::class, 'destroy'])->name('admin.userlist.destroy');
     // Route::get('/admin/buku/create', [BukuController::class, 'create'])->name('admin/buku.create');
     // Route::post('/admin/buku', [BukuController::class, 'store'])->name('admin/buku.store');
+
+    Route::get('pinjam-buku/{id}', [PinjamController::class, 'index'])->name('admin.peminjaman-buku');
 });
 
 Route::middleware(['auth', 'user-access:petugas'])->group(function(){
-    Route::get('/petugas/home', [HomeController::class, 'index'])->name('petugas/home');
+    Route::get('/petugas/home', [HomeController::class, 'petugasHome'])->name('petugas/home');
+
+    //books route
+    Route::get('/petugas/books', [BukuController::class, 'index'])->name('petugas/books');
+    Route::get('/petugas/books/create', [BukuController::class, 'create'])->name('petugas/books/create');
+    Route::post('/petugas/books', [BukuController::class, 'store'])->name('petugas/books/store');
+    Route::get('/petugas/books/{buku}/edit', [BukuController::class, 'edit'])->name('petugas/books/edit');
+    Route::put('/petugas/books/{buku}', [BukuController::class, 'update'])->name('petugas/books/update');
+    Route::delete('/petugas/books/{buku}', [BukuController::class, 'destroy'])->name('petugas/books/destroy');
+
+    //categorys route
+    Route::get('/petugas/categorys', [KategoriController::class, 'index'])->name('petugas/categorys');
+    Route::get('/petugas/categorys/create', [KategoriController::class, 'create'])->name('petugas/categorys/create');
+    Route::post('/petugas/categorys', [KategoriController::class, 'store'])->name('petugas/categorys/store');
+    Route::get('/petugas/categorys/{kategori}/edit', [KategoriController::class, 'edit'])->name('petugas/categorys/edit');
+    Route::put('/petugas/categorys/{kategori}', [KategoriController::class, 'update'])->name('petugas/categorys/update');
+    Route::delete('/petugas/categorys/{kategori}', [KategoriController::class, 'destroy'])->name('petugas/categorys/destroy');
+
+    //categorys route
+    Route::get('/petugas/authors', [PengarangController::class, 'index'])->name('petugas/authors');
+    Route::get('/petugas/authors/create', [PengarangController::class, 'create'])->name('petugas/authors/create');
+    Route::post('/petugas/authors', [PengarangController::class, 'store'])->name('petugas/authors/store');
+    Route::get('/petugas/authors/{pengarang}/edit', [PengarangController::class, 'edit'])->name('petugas/authors/edit');
+    Route::put('/petugas/authors/{pengarang}', [PengarangController::class, 'update'])->name('petugas/authors/update');
+    Route::delete('/petugas/authors/{pengarang}', [PengarangController::class, 'destroy'])->name('petugas/authors/destroy');
+
+    //categorys route
+    Route::get('/petugas/publishers', [PenerbitController::class, 'index'])->name('petugas/publishers');
+    Route::get('/petugas/publishers/create', [PenerbitController::class, 'create'])->name('petugas/publishers/create');
+    Route::post('/petugas/publishers', [PenerbitController::class, 'store'])->name('petugas/publishers/store');
+    Route::get('/petugas/publishers/{penerbit}/edit', [PenerbitController::class, 'edit'])->name('petugas/publishers/edit');
+    Route::put('/petugas/publishers/{penerbit}', [PenerbitController::class, 'update'])->name('petugas/publishers/update');
+    Route::delete('/petugas/publishers/{penerbit}', [PenerbitController::class, 'destroy'])->name('petugas/publishers/destroy');
+    
 });
 // Route::post('/login',);

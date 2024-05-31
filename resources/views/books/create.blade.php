@@ -90,6 +90,18 @@
                             </div>
 
                             <div class="form-group">
+                                <label class="font-weight-bold">Stock</label>
+                                <input type="text" class="form-control @error('stock') is-invalid @enderror" name="stock" value="{{ old('stock') }}" placeholder="stock">
+                            
+                                <!-- error message untuk tahun_terbit -->
+                                @error('stock')
+                                    <div class="alert alert-danger mt-2">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+
+                            <div class="form-group">
                                 <label class="font-weight-bold">Kategori</label>
                                 <select class="form-control @error('kategori_id') is-invalid @enderror" name="kategori_id">
                                     <option value="">Pilih Kategori</option>
