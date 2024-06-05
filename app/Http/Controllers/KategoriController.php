@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Kategori;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class KategoriController extends Controller
 {
@@ -27,7 +28,7 @@ class KategoriController extends Controller
 
         Kategori::create($request->all());
 
-        return redirect()->route('admin/categorys')
+        return redirect()->route(Auth::user()->type == 'admin' ? 'admin/categorys' : 'petugas/categorys')
             ->with('success', 'Kategori created successfully.');
     }
 
@@ -45,7 +46,7 @@ class KategoriController extends Controller
 
         $kategori->update($request->all());
 
-        return redirect()->route('admin/categorys')
+        return redirect()->route(Auth::user()->type == 'admin' ? 'admin/categorys' : 'petugas/categorys')
             ->with('success', 'Kategori updated successfully.');
     }
 
@@ -53,7 +54,7 @@ class KategoriController extends Controller
     {
         $kategori->delete();
 
-        return redirect()->route('admin/categorys')
+        return redirect()->route(Auth::user()->type == 'admin' ? 'admin/categorys' : 'petugas/categorys')
             ->with('success', 'Kategori deleted successfully.');
     }
 }

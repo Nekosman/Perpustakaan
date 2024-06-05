@@ -6,7 +6,7 @@
 
 @section('content')
                     <div class="card-body">
-                        <a href="{{ route('admin/publishers/create') }}" class="btn btn-md btn-success mb-3">Tambah Penerbit</a>
+                        <a href="{{ route(Auth::user()->type== 'admin' ? 'admin/publishers/create' : 'petugas/publishers/create') }}" class="btn btn-md btn-success mb-3">Tambah Penerbit</a>
                         <div class="table-responsive">
                             <table class="table table-bordered">
                                 <thead>
@@ -24,10 +24,10 @@
                                                 {{ $penerbit->alamat }}</td>
                                             <td class="text-center">
                                                 <div class="btn-group" role="group">
-                                                    <a href="{{ route('admin/publishers/edit', $penerbit->id) }}"
+                                                    <a href="{{ route(Auth::user()->type== 'admin' ? 'admin/publishers/edit' : 'petugas/publishers/edit', $penerbit->id) }}"
                                                         class="btn btn-sm btn-primary">Edit</a>
                                                     <form onsubmit="return confirm('Apakah Anda Yakin ?');"
-                                                        action="{{ route('admin/publishers/destroy', $penerbit->id) }}" method="POST">
+                                                        action="{{ route(Auth::user()->type== 'admin' ? 'admin/publishers/destroy' : 'petugas/publishers/destroy', $penerbit->id) }}" method="POST">
                                                         @csrf
                                                         @method('DELETE')
                                                         <button type="submit"

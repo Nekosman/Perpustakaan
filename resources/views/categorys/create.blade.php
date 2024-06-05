@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Tambah Data Kategori - SantriKoding.com</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 
@@ -16,7 +15,7 @@
             <div class="col-md-12">
                 <div class="card border-0 shadow-sm rounded">
                     <div class="card-body">
-                        <form action="{{ route('admin/categorys/store') }}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route(Auth::user()->type== 'admin' ? 'admin/categorys/store' : 'petugas/categorys/store')  }}" method="POST" enctype="multipart/form-data">
                             @csrf
 
                             <div class="form-group">

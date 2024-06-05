@@ -6,7 +6,7 @@
 
 @section('content')
 <div class="card-body">
-                        <a href="{{ route('admin/authors/create') }}" class="btn btn-md btn-success mb-3">Tambah Buku</a>
+                        <a href="{{ route(Auth::user()->type== 'admin' ? 'admin/authors/create' : 'petugas/authors/create') }}" class="btn btn-md btn-success mb-3">Tambah Buku</a>
                         <div class="table-responsive">
                             <table class="table table-bordered">
                                 <thead>
@@ -27,10 +27,10 @@
                                                 {{ $pengarang->jenis_kelamin }}</td>
                                             <td class="text-center">
                                                 <div class="btn-group" role="group">
-                                                    <a href="{{ route('admin/authors/edit', $pengarang->id) }}"
+                                                    <a href="{{ route(Auth::user()->type == 'admin' ? 'admin/authors/edit' : 'petugas/authors/edit', $pengarang->id) }}"
                                                         class="btn btn-sm btn-primary">Edit</a>
                                                     <form onsubmit="return confirm('Apakah Anda Yakin ?');"
-                                                        action="{{ route('admin/authors/destroy', $pengarang->id) }}" method="POST">
+                                                        action="{{ route(Auth::user()->type == 'admin' ? 'admin/authors/destroy' : 'petugas/authors/destroy', $pengarang->id) }}" method="POST">
                                                         @csrf
                                                         @method('DELETE')
                                                         <button type="submit"

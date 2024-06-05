@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\penerbit;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PenerbitController extends Controller
 {
@@ -27,7 +28,8 @@ class PenerbitController extends Controller
 
        Penerbit::create($request->all());
 
-       return redirect()-> route('admin/publishers')->with('success', 'penerbit Created successfully');
+       return redirect()-> route(Auth::user()->type== 'admin' ? 'admin/publishers' : 'petugas/publishers')
+        ->with('success', 'penerbit Created successfully');
     }
 
     public function edit(Penerbit $penerbit)
@@ -44,7 +46,7 @@ class PenerbitController extends Controller
 
         $penerbit->update($request->all());
 
-        return redirect()->route('admin/publishers')
+        return redirect()->route(Auth::user()->type== 'admin' ? 'admin/publishers' : 'petugas/publishers')
             ->with('success', 'penerbit updated successfully.');
     }
 
@@ -52,7 +54,7 @@ class PenerbitController extends Controller
     {
         $penerbit->delete();
 
-        return redirect()->route('admin/publishers')
+        return redirect()->route(Auth::user()->type== 'admin' ? 'admin/publishers' : 'petugas/publishers')
             ->with('success', 'Kategori deleted successfully.');
     }
     

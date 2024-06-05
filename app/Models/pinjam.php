@@ -9,19 +9,16 @@ class Pinjam extends Model
 {
     use HasFactory;
 
-    protected $table = 'peminjam';
+    protected $table = 'peminjaman';
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    protected $fillable = [
-        'id',
-        'id_buku',
-        'id_member',
-        'tanggal_peminjaman', // tambahkan koma di sini
-        'tanggal_pengembalian', // tambahkan koma di sini
-        'jenis', // tambahkan koma di sini
-    ];
+    public function bukus()
+    {
+        return $this->belongsTo('App\Models\buku','buku');
+    }
+
+    public function userss()
+    {
+        return $this->belongsTo('App\Models\User','user');
+    }
+
 }

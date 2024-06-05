@@ -8,6 +8,7 @@ use App\Models\Penerbit;
 use App\Models\Pengarang;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class BukuController extends Controller
@@ -16,6 +17,18 @@ class BukuController extends Controller
     {
         $bukus = Buku::all();
         return view('books.index', compact('bukus'));
+    }
+
+    public function showBuku()
+    {
+        $bukus = Buku::all();
+        return view('home', compact('bukus'));
+    }
+
+    public function show(string $id)
+    {
+        $bukus = Buku::findOrFail($id);
+        return view('books.show', compact('bukus'));
     }
 
     public function create()
@@ -30,7 +43,7 @@ class BukuController extends Controller
     public function store(Request $request) : RedirectResponse
     {
         $this->validate($request, [
-            'image' => 'required|image|mimes:jpeg,jpg,png|max:3000',
+            'image' => 'required|image|mimes:jpeg,jpg,png|max:100000',
             'judul' => 'required',
             'pengarang_id' => 'required',
             'penerbit_id' => 'required',
@@ -52,7 +65,7 @@ class BukuController extends Controller
             'kategori_id' => $request->kategori_id
         ]);
 
-        return redirect()->route('admin/books')
+        return redirect()->route(Auth::user()->type == 'admin' ? 'admin/books' : 'petugas/books')
             ->with('success', 'Buku created successfully.');
     }
 
@@ -104,7 +117,7 @@ class BukuController extends Controller
             ]);
         }
 
-        return redirect()->route('books/books')
+        return redirect()->route(Auth::user()->type == 'admin' ? 'admin/books' : 'petugas/books')
             ->with('success', 'Buku updated successfully');
     }
 
@@ -113,7 +126,7 @@ class BukuController extends Controller
         Storage::delete('public/bukus/'.$buku->image);
         $buku->delete();
 
-        return redirect()->route('admin/books')
+        return redirect()->route(Auth::user()->type == 'admin' ? 'admin/books' : 'petugas/books')
             ->with('success', 'Buku deleted successfully');
     }
 }

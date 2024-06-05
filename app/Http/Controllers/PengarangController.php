@@ -6,6 +6,7 @@ use App\Models\penerbit;
 use Illuminate\Http\Request;
 
 use App\Models\pengarang;
+use Illuminate\Support\Facades\Auth;
 
 class PengarangController extends Controller
 {
@@ -30,7 +31,7 @@ class PengarangController extends Controller
 
         Pengarang::create($request->all());
 
-        return redirect()->route('admin/authors')
+        return redirect()->route(Auth::user()->type== 'admin' ? 'admin/authors' : 'petugas/authors')
             ->with('success', 'Kategori created successfully.');
     }
 
@@ -49,7 +50,7 @@ class PengarangController extends Controller
 
         $pengarang->update($request->all());
 
-        return redirect()->route('admin/authors')
+        return redirect()->route(Auth::user()->type== 'admin' ? 'admin/authors' : 'petugas/authors')
             ->with('success', 'pengarang updated successfully.');
     }
 
@@ -57,7 +58,7 @@ class PengarangController extends Controller
     {
         $pengarang->delete();
 
-        return redirect()->route('admin/authors')
+        return redirect()->route(Auth::user()->type== 'admin' ? 'admin/authors' : 'petugas/authors')
             ->with('success', 'Penerbit deleted successfully.');
     }
 }

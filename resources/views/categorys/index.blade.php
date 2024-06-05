@@ -11,7 +11,7 @@
                 </div>
                 <div class="card border-0 shadow-sm rounded">
                     <div class="card-body"> --}}
-                        <a href="{{ route('admin/categorys/create') }}" class="btn btn-md btn-success mb-3">Tambah Kategori</a>
+                        <a href="{{ route(Auth::user()->type== 'admin' ? 'admin/categorys/create' : 'petugas/categorys/create') }}" class="btn btn-md btn-success mb-3">Tambah Kategori</a>
                         <div class="table-responsive">
                             <table class="table table-bordered">
                                 <thead>
@@ -29,10 +29,10 @@
                                                 {{ $kategori->deskripsi }}</td>
                                             <td class="text-center">
                                                 <div class="btn-group" role="group">
-                                                    <a href="{{ route('admin/categorys/edit', $kategori->id) }}"
+                                                    <a href="{{ route(Auth::user()->type== 'admin' ? 'admin/categorys/edit' : 'petugas/categorys/edit', $kategori->id) }}"
                                                         class="btn btn-sm btn-primary">Edit</a>
                                                     <form onsubmit="return confirm('Apakah Anda Yakin ?');"
-                                                        action="{{ route('admin/categorys/destroy', $kategori->id) }}" method="POST">
+                                                        action="{{ route(Auth::user()->type== 'admin' ? 'admin/categorys/destroy' : 'petugas/categorys/destroy', $kategori->id) }}" method="POST">
                                                         @csrf
                                                         @method('DELETE')
                                                         <button type="submit"

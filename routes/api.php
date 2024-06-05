@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\auth\bukuController as AuthBukuController;
+use App\Http\Controllers\BukuController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -17,3 +19,9 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+
+
+Route::get('/books', [AuthBukuController::class, 'getBooksData'])->name('books');
+Route::get('/books/{judul?}', [AuthBukuController::class, 'getBooksName'])->name('kategori_by_name');
+Route::post('/books', [AuthBukuController::class, 'storeBooksData'])->name('create_books');

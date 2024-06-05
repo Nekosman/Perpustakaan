@@ -14,7 +14,7 @@
             <div class="col-md-12">
                 <div class="card border-0 shadow-sm rounded">
                     <div class="card-body">
-                        <form action="{{ route('admin/books/update', $buku->id) }}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route(Auth::user()->type == 'admin' ? 'admin/books/update' : 'petugas/books/update', $buku->id) }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
 
@@ -80,6 +80,18 @@
 
                                 <!-- error message untuk tahun_terbit -->
                                 @error('tahun_terbit')
+                                    <div class="alert alert-danger mt-2">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+
+                            <div class="form-group">
+                                <label class="font-weight-bold">Stock</label>
+                                <input type="text" class="form-control @error('stock') is-invalid @enderror" name="stock" value="{{ old('stock') }}" placeholder="stock">
+                            
+                                <!-- error message untuk tahun_terbit -->
+                                @error('stock')
                                     <div class="alert alert-danger mt-2">
                                         {{ $message }}
                                     </div>

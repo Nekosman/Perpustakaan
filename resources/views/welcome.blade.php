@@ -31,9 +31,9 @@
                     // case 'petugas':
                     //     $homeRoute = 'petugas.home'; // Ganti dengan nama route yang sesuai untuk petugas
                     //     break;
-                    case 'user':
+                    case 'siswa':
                     default:
-                        $homeRoute = 'home'; // Ganti dengan nama route yang sesuai untuk siswa
+                        $homeRoute = 'siswa/home'; // Ganti dengan nama route yang sesuai untuk siswa
                         break;
                 }
             @endphp

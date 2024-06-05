@@ -14,7 +14,7 @@
             <div class="col-md-12">
                 <div class="card border-0 shadow-sm rounded">
                     <div class="card-body">
-                        <form action="{{ route('admin/publishers/update', $penerbit->id) }}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route(Auth::user()->type== 'admin' ? 'admin/publishers/update' : 'petugas/publishers/update', $penerbit->id) }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
 

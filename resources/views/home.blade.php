@@ -2,12 +2,18 @@
 
 @section('title', 'Home')
 
-@section('content')
-<header class="bg-white shadow">
-    <div class="max-w-7xl mx-auto py-6 px4 sm:px-6 lg:px-8">
-        <h1 class="text-3xl font-bold text-gray-900">
-            home
-        </h1>
+@section('contents')
+@if (count($bukus) > 0)
+    <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+        @foreach($bukus as $buku)
+            <div style="flex: 1 1 auto; max-width: 150px;">
+                <a href="{{ route('books.show', $buku->id) }}">
+                    <img src="{{ asset('/storage/bukus/'.$buku->image) }}" class="rounded" style="width: 100%;">
+                </a>
+            </div>
+        @endforeach
     </div>
-</header>
+@else
+    <p>No books found.</p>
+@endif
 @endsection
