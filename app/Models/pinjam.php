@@ -16,9 +16,9 @@ class Pinjam extends Model
         return $this->belongsTo('App\Models\buku','buku');
     }
 
+
     public function userss()
     {
         return $this->belongsTo('App\Models\User','user');
     }
-
 }

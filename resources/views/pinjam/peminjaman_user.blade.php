@@ -25,15 +25,24 @@
                 @forelse ($data as $pinjam)
                     <tr>
                         <td>{{ $pinjam->id }}</td>
-                        <td>{{ $pinjam->buk }}</td>
+                        <td>{{ $pinjam->bukus->judul }}</td>
                         <td>{{ $pinjam->pengajuan }}</td>
                         <td>{{ $pinjam->tangal_peminjaman }}</td>
                         <td>{{ $pinjam->tanggal_pengembalian }}</td>
                         <td>{{ $pinjam->status }}</td>
-                       <td> <form action="{{ route('peminjaman.batal', $pinjam->id) }}" method="POST" class="d-inline">
-                        @csrf
-                        <button type="submit" class="btn btn-danger">Batalkan Peminjaman</button>
-                    </form></td>
+                       <td> 
+                        @if($pinjam->status === 'pengajuan')
+                        <form action="{{ route('peminjaman.batal', $pinjam->id) }}" method="POST" class="d-inline">
+                            @csrf
+                            <button type="submit" class="btn btn-danger">Batalkan Peminjaman</button>
+                        </form>
+                    @elseif($pinjam->status === 'disetujui')
+                        <form action="{{ route('peminjaman.kembali', $pinjam->id) }}" method="POST" class="d-inline">
+                            @csrf
+                            <button type="submit" class="btn btn-primary">Kembalikan Buku</button>
+                        </form>
+                    @endif
+                </td>
                     </tr>
                 @empty
                     <tr>

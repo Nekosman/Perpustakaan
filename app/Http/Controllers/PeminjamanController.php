@@ -10,6 +10,9 @@ use App\Models\Pinjam;
 
 class PeminjamanController extends Controller
 {
+
+    
+
     public function index()
 {
     $title = 'Halaman Peminjaman Buku';
@@ -28,50 +31,51 @@ class PeminjamanController extends Controller
     }
 
     public function store($id)
-{
-    // if (!Auth::check()) {
-    //     return redirect()->route('account.login')->with('error', 'Anda harus login untuk meminjam buku');
-    // }
-
-    // Cek jumlah peminjaman aktif pengguna
-    $BukuBatas = $this->checkActiveLoans();
-
-    if ($BukuBatas >= 5) {
-        return redirect()->back()->with('gagal', 'Anda tidak dapat meminjam lebih dari 5 buku sekaligus.');
+    {
+        // if (!Auth::check()) {
+        //     return redirect()->route('account.login')->with('error', 'Anda harus login untuk meminjam buku');
+        // }
+    
+        // Cek jumlah peminjaman aktif pengguna
+        $BukuBatas = $this->checkActiveLoans();
+    
+        if ($BukuBatas >= 5) {
+            return redirect()->back()->with('gagal', 'Anda tidak dapat meminjam lebih dari 5 buku sekaligus.');
+        }
+    
+        // Membatasi peminjaman 1 akun 1 buku dengan status 'disetujui'
+        $BukuBatas = Pinjam::where('user', Auth::user()->id)
+            ->where('buku', $id)
+            ->where('status', 'disetujui')
+            ->first();
+    
+        if ($BukuBatas) {
+            return redirect()->back()->with('gagal', 'Anda sudah meminjam buku ini.');
+        }
+    
+        // Cek ketersediaan stok buku
+        $cek = DB::table('bukus')->where('id', $id)->where('stock', '>', 0)->count();
+        if ($cek > 0) {
+            DB::table('peminjaman')->insert([
+                'buku' => $id,
+                'user' => Auth::user()->id,
+                'denda' => 0,
+                'tangal_peminjaman' => null,
+                'pengajuan' => Carbon::now(),
+                'tanggal_pengembalian' => null,
+                'status' => 'pengajuan' // Set status here
+            ]);
+    
+            $buku = DB::table('bukus')->where('id', $id)->first();
+            $stock_baru = $buku->stock - 1;
+    
+            DB::table('bukus')->where('id', $id)->update(['stock' => $stock_baru]);
+            return redirect()->back()->with('success', 'Anda berhasil meminjam');
+        } else {
+            return redirect()->back()->with('gagal', 'Buku Tidak Tersedia');
+        }
     }
-
-    // Membatasi peminjaman 1 akun 1 buku
-    $BukuBatas = Pinjam::where('user', Auth::user()->id)
-        ->where('buku', $id)
-        ->whereIn('status', ['disetujui', 'batal', 'tolak'])
-        ->first();
-
-    if ($BukuBatas) {
-        return redirect()->back()->with('gagal', 'Anda sudah meminjam buku ini.');
-    }
-
-    // Cek ketersediaan stok buku
-    $cek = DB::table('bukus')->where('id', $id)->where('stock', '>', 0)->count();
-    if ($cek > 0) {
-        DB::table('peminjaman')->insert([
-            'buku' => $id,
-            'user' => Auth::user()->id,
-            'denda' => 0,
-            'tangal_peminjaman' => null,
-            'pengajuan' => Carbon::now(),
-            'tanggal_pengembalian' => null,
-            'status' => 'pengajuan' // Set status here
-        ]);
-
-        $buku = DB::table('bukus')->where('id', $id)->first();
-        $stock_baru = $buku->stock - 1;
-
-        DB::table('bukus')->where('id', $id)->update(['stock' => $stock_baru]);
-        return redirect()->back()->with('success', 'Anda berhasil meminjam');
-    } else {
-        return redirect()->back()->with('gagal', 'Buku Tidak Tersedia');
-    }
-}
+    
 
 
 public function accept($id)
@@ -82,7 +86,7 @@ public function accept($id)
     $peminjaman->tanggal_pengembalian = Carbon::now()->addDays(10);
     $peminjaman->save();
 
-    return redirect()->route('pinjam-buku')->with('success', 'Peminjaman disetujui');
+    return redirect()->back()->with('success', 'Peminjaman disetujui');
 }
 
     public function remove($id)
@@ -91,7 +95,7 @@ public function accept($id)
         $peminjaman->status = 'batalkan';
         $peminjaman->save();
 
-        return redirect()->route('pinjam-buku')->with('error', 'Peminjaman Dibatalkan');
+        return redirect()->back()->with('error', 'Peminjaman Dibatalkan');
     }
 
     public function tolak($id)
@@ -116,7 +120,7 @@ public function accept($id)
     $item->status = 'tolak';
     $item->save();
 
-    return redirect()->route('pinjam-buku')->with('error', 'Peminjaman ditolak');
+    return redirect()->back()->with('error', 'Peminjaman ditolak');
 }
 
 
@@ -126,6 +130,11 @@ public function batal($id)
 
     if (!$item) {
         return redirect()->back()->with('error', 'Peminjaman tidak ditemukan');
+    }
+
+    // Hanya izinkan pembatalan jika status peminjaman adalah 'pengajuan'
+    if ($item->status !== 'pengajuan') {
+        return redirect()->back()->with('error', 'Peminjaman hanya dapat dibatalkan jika statusnya pengajuan');
     }
 
     $id_buku = $item->buku;
@@ -142,13 +151,46 @@ public function batal($id)
     $item->status = 'batal';
     $item->save();
 
-    return redirect()->back()->with('error', 'Peminjaman Dibatalkan');
+    return redirect()->back()->with('success', 'Peminjaman Dibatalkan');
 }
 
 
     public function PeminjamanUser()
     {
         $data = Pinjam::with(['userss', 'bukus'])->where('user',  (Auth::user()->id))->get();
+        // dd($data);
         return view('pinjam.peminjaman_user', ['data' => $data]);
     }
+
+    public function kembali($id)
+    {
+        $peminjaman = Pinjam::find($id);
+    
+        if (!$peminjaman) {
+            return redirect()->back()->with('error', 'Peminjaman tidak ditemukan');
+        }
+    
+        if ($peminjaman->status !== 'disetujui') {
+            return redirect()->back()->with('error', 'Hanya peminjaman yang disetujui yang dapat dikembalikan');
+        }
+    
+        $id_buku = $peminjaman->buku;
+        $buku = Buku::find($id_buku);
+    
+        if (!$buku) {
+            return redirect()->back()->with('error', 'Buku tidak ditemukan');
+        }
+    
+        $buku->stock += 1;
+        $buku->save();
+    
+        $peminjaman->status = 'dikembalikan';
+        $peminjaman->tanggal_pengembalian = Carbon::now();
+        $peminjaman->save();
+    
+        return redirect()->back()->with('success', 'Buku berhasil dikembalikan');
+    }
+
+    
+    
 }

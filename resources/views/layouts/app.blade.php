@@ -150,7 +150,7 @@
             </a>
             <div class="collapse" id="form-elements">
               <ul class="nav flex-column sub-menu">
-                <li class="nav-item"><a class="nav-link" href="pinjam">data pinjam</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ route('admin.pinjam-buku') }}">data pinjam</a></li>
               </ul>
             </div>
           </li>

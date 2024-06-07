@@ -26,33 +26,33 @@
                 @forelse ($data as $pinjam)
                     <tr>
                         <td>{{ $pinjam->id }}</td>
-                        <td>{{ $pinjam->buku }}</td>
-                        <td>{{ $pinjam->user }}</td>
+                        <td>{{ $pinjam->bukus->judul }}</td>
+                        <td>{{ $pinjam->userss->name }}</td>
                         <td>{{ $pinjam->pengajuan }}</td>
                         <td>{{ $pinjam->tangal_peminjaman }}</td>
                         <td>{{ $pinjam->tanggal_pengembalian }}</td>
                         <td>{{ $pinjam->status }}</td>
                         <td class="text-center">
-                            <form method="POST" action="{{ route('admin.pinjam.accept', $pinjam->id) }}">
-                                @csrf
-                                @method('PATCH')
-                                <button type="submit" class="btn btn-sm btn-success">Terima</button>
-                            </form>
-                            
-                            <form method="POST" action="{{ route('admin.pinjam.tolak', $pinjam->id) }}">
-                                @csrf
-                                @method('PATCH')
-                                <button type="submit" class="btn btn-sm btn-danger">Tolak</button>
-                            </form>
-                            
-                            <form method="POST" action="{{ route('admin.pinjam.remove', $pinjam->id) }}">
-                                @csrf
-                                @method('PATCH')
-                                <button type="submit" class="btn btn-sm btn-warning">Batalkan</button>
-                            </form>
+                            @if ($pinjam->status == 'pengajuan')
+                                <form method="POST" action="{{ route('admin.pinjam.accept', $pinjam->id) }}" style="display:inline;">
+                                    @csrf
+                                    @method('PATCH')
+                                    <button type="submit" class="btn btn-sm btn-success">Terima</button>
+                                </form>
+
+                                <form method="POST" action="{{ route('admin.pinjam.tolak', $pinjam->id) }}" style="display:inline;">
+                                    @csrf
+                                    @method('PATCH')
+                                    <button type="submit" class="btn btn-sm btn-danger">Tolak</button>
+                                </form>
+
+                                <form method="POST" action="{{ route('admin.pinjam.remove', $pinjam->id) }}" style="display:inline;">
+                                    @csrf
+                                    @method('PATCH')
+                                    <button type="submit" class="btn btn-sm btn-warning">Batalkan</button>
+                                </form>
+                            @endif
                         </td>
-                        
-                        
                     </tr>
                 @empty
                     <tr>

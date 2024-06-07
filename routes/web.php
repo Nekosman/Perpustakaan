@@ -63,6 +63,7 @@ Route::middleware(['auth', 'user-access:siswa'])->group(function(){
     Route::post('/siswa/peminjaman/store/{id}', [PeminjamanController::class, 'store'])->name('peminjaman.store');
     // Route::get('/siswa/peminjaman/batal/{id}', [PeminjamanController::class, 'batal'])->name('peminjaman.batal');
     Route::post('/peminjaman/{id}/batal', [PeminjamanController::class, 'batal'])->name('peminjaman.batal');
+    Route::post('/peminjaman/{id}/kembali', [PeminjamanController::class, 'kembali'])->name('peminjaman.kembali');
 
 });
 
@@ -168,9 +169,16 @@ Route::middleware(['auth', 'user-access:petugas'])->group(function(){
     Route::delete('/petugas/publishers/{penerbit}', [PenerbitController::class, 'destroy'])->name('petugas/publishers/destroy');
     
     //peminjaman routes
-    Route::get('/petugas/peminjaman', [PeminjamanController::class, 'index'])->name('peminjaman.index');
-    Route::get('/petugas/peminjaman/accept/{id}', [PeminjamanController::class, 'accept'])->name('peminjaman.accept');
-    Route::get('/petugas/peminjaman/tolak/{id}', [PeminjamanController::class, 'tolak'])->name('peminjaman.tolak');
-    Route::get('/petugas/peminjaman/remove/{id}', [PeminjamanController::class, 'remove'])->name('peminjaman.remove');
+    Route::get('/petugas/pinjam-buku', [PeminjamanController::class, 'index'])->name('petugas.pinjam-buku');
+    Route::post('/petugas/pinjam-buku', [PeminjamanController::class, 'index'])->name('petugas.pinjam-buku');
+    Route::post('/petugas/pinjam-buku/store/{id}', [PeminjamanController::class, 'store'])->name('petugas.pinjam.store');
+    Route::patch('/petugas/pinjam-buku/accept/{id}', [PeminjamanController::class, 'accept'])->name('petugas.pinjam.accept');
+    Route::patch('/petugas/pinjam-buku/remove/{id}', [PeminjamanController::class, 'remove'])->name('petugas.pinjam.remove');
+    Route::patch('/petugas/pinjam-buku/tolak/{id}', [PeminjamanController::class, 'tolak'])->name('petugas.pinjam.tolak');
+    Route::patch('/petugas/pinjam-buku/batal/{id}', [PeminjamanController::class, 'batal'])->name('petugas.pinjam.batal');
+    Route::get('/petugas/peminjaman-user', [PeminjamanController::class, 'PeminjamanUser'])->name('petugas.PeminjamanUser');
+    Route::get('/petugas/peminjaman', [PeminjamanController::class, 'index'])->name('petugas.peminjaman.index');
+    Route::get('/petugas/peminjaman/accept/{id}', [PeminjamanController::class, 'accept'])->name('petugas.peminjaman.accept');
+    Route::get('/petugas/peminjaman/tolak/{id}', [PeminjamanController::class, 'tolak'])->name('petugas.peminjaman.tolak');
 });
 // Route::post('/login',);
