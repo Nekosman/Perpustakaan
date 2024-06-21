@@ -1,8 +1,8 @@
 <?php
 
 use App\Http\Controllers\api\AuthController;
+use App\Http\Controllers\api\BukuController;
 use App\Http\Controllers\api\PeminjamanController;
-use App\Http\Controllers\BukuController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -25,22 +25,20 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/user', [AuthController::class, 'show']);
 
     Route::get('/buku', [BukuController::class, 'index']);
-    
-    // Rute-rute yang hanya bisa diakses oleh pengguna yang sudah login
-    Route::post('/peminjaman/store/{id}', [PeminjamanController::class, 'store']);
-    Route::post('/peminjaman/batal/{id}', [PeminjamanController::class, 'batal']);
-    Route::post('/peminjaman/kembali/{id}', [PeminjamanController::class, 'kembali']);
-    Route::get('/peminjaman/user', [PeminjamanController::class, 'peminjamanUser']);
+
 
     Route::get('/buku', [BukuController::class, 'index']);
     Route::get('/buku/{id}', [BukuController::class, 'show']);
-    Route::post('/peminjaman', [PeminjamanController::class, 'index']);
+
+    Route::get('/peminjaman', [PeminjamanController::class, 'index']);
+    Route::post('/peminjaman/{id}', [PeminjamanController::class, 'store']);
+    Route::get('/peminjaman/kembali/{id}', [PeminjamanController::class, 'kembali']);
 });
 
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+    // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+    //     return $request->user();
+    // });
 
 
 

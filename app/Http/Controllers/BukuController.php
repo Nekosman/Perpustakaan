@@ -27,9 +27,10 @@ class BukuController extends Controller
 
     public function show(string $id)
     {
-        $bukus = Buku::findOrFail($id);
+        $bukus = Buku::with(['pinjaman'])->findOrFail($id);
         return view('books.show', compact('bukus'));
     }
+    
 
     public function create()
     {

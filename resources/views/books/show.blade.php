@@ -6,19 +6,25 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Detail Data Buku - Perpustakaan</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        .checked {
+            color: orange;
+        }
+    </style>
 </head>
 <body style="background: lightgray">
     @if (session('success'))
     <div class="alert alert-success">
         {{ session('success') }}
     </div>
-@endif
+    @endif
 
-@if (session('gagal'))
+    @if (session('error'))
     <div class="alert alert-danger">
-        {{ session('gagal') }}
+        {{ session('error') }}
     </div>
-@endif
+    @endif
 
     <div class="container mt-5 mb-5">
         <div class="row justify-content-center">
@@ -35,14 +41,30 @@
                                 <p><strong>Penerbit:</strong> {{ $bukus->penerbit->nama_penerbit }}</p>
                                 <p><strong>Tahun Terbit:</strong> {{ $bukus->tahun_terbit }}</p>
                                 <p><strong>Stock:</strong> {{ $bukus->stock }}</p>
-                                <p> <td>
+                                <p>
                                     <form action="{{ route('peminjaman.store', $bukus->id) }}" method="POST">
                                         @csrf
                                         <button type="submit" class="btn btn-flat btn-sm btn-warning">Pinjam Buku</button>
                                     </form>
-                                </td></p>
+                                </p>
                             </div>
                         </div>
+                        <hr>
+                        <h5>Rating dan Review:</h5>
+                        @foreach($bukus->ratings as $rating)
+                            <p>
+                                <strong>{{ $rating->user->name }}:</strong> 
+                                @for ($i = 1; $i <= 5; $i++)
+                                    <span class="fa fa-star {{ $i <= $rating->rating ? 'checked' : '' }}"></span>
+                                @endfor
+                                <br>
+                                {{ $rating->review }}
+                            </p>
+                        @endforeach
+                        @if ($bukus->pinjaman && $bukus->pinjaman->status == 'dikembalikan')
+                            <a href="{{ route('ratings.create', $bukus->id) }}" class="btn btn-primary mt-3">Beri Rating</a>
+                        @endif
+                       
                     </div>
                 </div>
             </div>

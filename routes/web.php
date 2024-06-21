@@ -13,6 +13,8 @@ use App\Http\Controllers\PeminjamanController;
 use App\Http\Controllers\PenerbitController;
 use App\Http\Controllers\PengarangController;
 use App\Http\Controllers\PinjamController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RatingController;
 use App\Http\Controllers\userController;
 use App\Models\pengarang;
 
@@ -38,9 +40,9 @@ Route::get('/', function () {
 // Route::resource('pinjam', PinjamController::class);
 
 
-Route::get('/login', function () {
-    return view('login');
-});
+// Route::get('/login', function () {
+//     return view('login');
+// });
 
 Route::controller(AuthController::class)->group(function(){
     //register
@@ -64,13 +66,17 @@ Route::middleware(['auth', 'user-access:siswa'])->group(function(){
     // Route::get('/siswa/peminjaman/batal/{id}', [PeminjamanController::class, 'batal'])->name('peminjaman.batal');
     Route::post('/peminjaman/{id}/batal', [PeminjamanController::class, 'batal'])->name('peminjaman.batal');
     Route::post('/peminjaman/{id}/kembali', [PeminjamanController::class, 'kembali'])->name('peminjaman.kembali');
-
+    Route::get('/siswa/profile', [ProfileController::class, 'show'])->name('profile.show');
+    Route::get('/siswa/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::put('/siswa/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::get('ratings/{id}/create', [RatingController::class, 'create'])->name('ratings.create');
+    Route::post('ratings/{id}', [RatingController::class, 'store'])->name('ratings.store');
 });
 
 Route::middleware(['auth', 'user-access:admin'])->group(function(){
     Route::get('/admin/home', [HomeController::class, 'adminHome'])->name('admin/home');
     
-    Route::get('/admin/profile', [AdminController::class, 'profilepage'])->name('admin/profile');
+    // Route::get('/admin/profile', [AdminController::class, 'profilepage'])->name('admin/profile');
 
    //books route
     Route::get('/admin/books', [BukuController::class, 'index'])->name('admin/books');
@@ -88,7 +94,7 @@ Route::middleware(['auth', 'user-access:admin'])->group(function(){
     Route::put('/admin/categorys/{kategori}', [KategoriController::class, 'update'])->name('admin/categorys/update');
     Route::delete('/admin/categorys/{kategori}', [KategoriController::class, 'destroy'])->name('admin/categorys/destroy');
 
-    //categorys route
+    //authors route
     Route::get('/admin/authors', [PengarangController::class, 'index'])->name('admin/authors');
     Route::get('/admin/authors/create', [PengarangController::class, 'create'])->name('admin/authors/create');
     Route::post('/admin/authors', [PengarangController::class, 'store'])->name('admin/authors/store');
@@ -96,7 +102,7 @@ Route::middleware(['auth', 'user-access:admin'])->group(function(){
     Route::put('/admin/authors/{pengarang}', [PengarangController::class, 'update'])->name('admin/authors/update');
     Route::delete('/admin/authors/{pengarang}', [PengarangController::class, 'destroy'])->name('admin/authors/destroy');
 
-    //categorys route
+    //publishers route
     Route::get('/admin/publishers', [PenerbitController::class, 'index'])->name('admin/publishers');
     Route::get('/admin/publishers/create', [PenerbitController::class, 'create'])->name('admin/publishers/create');
     Route::post('/admin/publishers', [PenerbitController::class, 'store'])->name('admin/publishers/store');
@@ -123,9 +129,12 @@ Route::middleware(['auth', 'user-access:admin'])->group(function(){
     Route::patch('/admin/pinjam-buku/tolak/{id}', [PeminjamanController::class, 'tolak'])->name('admin.pinjam.tolak');
     Route::patch('/admin/pinjam-buku/batal/{id}', [PeminjamanController::class, 'batal'])->name('admin.pinjam.batal');
     Route::get('/admin/peminjaman-user', [PeminjamanController::class, 'PeminjamanUser'])->name('admin.PeminjamanUser');
-    Route::get('/admin/peminjaman', [PeminjamanController::class, 'index'])->name('admin.peminjaman.index');
-    Route::get('/admin/peminjaman/accept/{id}', [PeminjamanController::class, 'accept'])->name('admin.peminjaman.accept');
-    Route::get('/admin/peminjaman/tolak/{id}', [PeminjamanController::class, 'tolak'])->name('admin.peminjaman.tolak');
+
+    Route::post('admin/peminjaman/approve-return/{id}', [PeminjamanController::class, 'approveReturn'])->name('peminjaman.approveReturn');
+
+    // Route::get('/admin/peminjaman', [PeminjamanController::class, 'index'])->name('admin.peminjaman.index');
+    // Route::get('/admin/peminjaman/accept/{id}', [PeminjamanController::class, 'accept'])->name('admin.peminjaman.accept');
+    // Route::get('/admin/peminjaman/tolak/{id}', [PeminjamanController::class, 'tolak'])->name('admin.peminjaman.tolak');
 
     // Route::get('/admin/buku/create', [BukuController::class, 'create'])->name('admin/buku.create');
     // Route::post('/admin/buku', [BukuController::class, 'store'])->name('admin/buku.store');

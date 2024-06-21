@@ -27,7 +27,7 @@
                             <img src="{{ asset('/storage/bukus/'.$buku->image) }}" class="rounded" style="max-width: 150px">
                         </td>
                         <td>
-                            <form action="{{ route('admin.pinjam.store', $buku->id) }}" method="POST">
+                            <form action="{{ route(Auth::user()->type == 'admin' ? 'admin.pinjam.store' : 'petugas.pinjam.store', $buku->id) }}" method="POST">
                                 @csrf
                                 <button type="submit" class="btn btn-flat btn-sm btn-warning">Pinjam Buku</button>
                             </form>
@@ -58,7 +58,7 @@
                             </div>
                         </td>
                     </tr>
-                @endforelse
+                @endforelse 
             </tbody>
         </table>
     </div>

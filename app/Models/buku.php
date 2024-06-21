@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class buku extends Model
 {
@@ -35,7 +36,12 @@ class buku extends Model
     }
     public function pinjaman()
     {
-        return $this->hasMany(Pinjam::class, 'id');
+        return $this->hasOne(Pinjam::class, 'buku')->where('user', Auth::id())->latest();
+    }
+
+    public function ratings()
+    {
+        return $this->hasMany(Rating::class);
     }
 
 

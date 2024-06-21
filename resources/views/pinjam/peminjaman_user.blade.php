@@ -5,11 +5,14 @@
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 @endpush
 
-@section('contents')
+@section('content')
 <div class="card-body">
     <h3>Daftar Peminjaman Saya</h3>
+    <div class="mb-3">
+        <input type="text" id="searchInput" class="form-control" placeholder="Cari berdasarkan judul buku">
+    </div>
     <div class="table-responsive">
-        <table class="table table-bordered">
+        <table class="table table-bordered" id="peminjamanTable">
             <thead>
                 <tr>
                     <th scope="col">ID</th>
@@ -27,26 +30,26 @@
                         <td>{{ $pinjam->id }}</td>
                         <td>{{ $pinjam->bukus->judul }}</td>
                         <td>{{ $pinjam->pengajuan }}</td>
-                        <td>{{ $pinjam->tangal_peminjaman }}</td>
+                        <td>{{ $pinjam->tanggal_peminjaman }}</td>
                         <td>{{ $pinjam->tanggal_pengembalian }}</td>
                         <td>{{ $pinjam->status }}</td>
-                       <td> 
-                        @if($pinjam->status === 'pengajuan')
-                        <form action="{{ route('peminjaman.batal', $pinjam->id) }}" method="POST" class="d-inline">
-                            @csrf
-                            <button type="submit" class="btn btn-danger">Batalkan Peminjaman</button>
-                        </form>
-                    @elseif($pinjam->status === 'disetujui')
-                        <form action="{{ route('peminjaman.kembali', $pinjam->id) }}" method="POST" class="d-inline">
-                            @csrf
-                            <button type="submit" class="btn btn-primary">Kembalikan Buku</button>
-                        </form>
-                    @endif
-                </td>
+                        <td> 
+                            @if($pinjam->status === 'pengajuan')
+                                <form action="{{ route('peminjaman.batal', $pinjam->id) }}" method="POST" class="d-inline">
+                                    @csrf
+                                    <button type="submit" class="btn btn-danger">Batalkan Peminjaman</button>
+                                </form>
+                            @elseif($pinjam->status === 'disetujui')
+                                <form action="{{ route('peminjaman.kembali', $pinjam->id) }}" method="POST" class="d-inline">
+                                    @csrf
+                                    <button type="submit" class="btn btn-primary">Kembalikan Buku</button>
+                                </form>
+                            @endif
+                        </td>
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="6" class="text-center">
+                        <td colspan="7" class="text-center">
                             <div class="alert alert-danger">
                                 Data Peminjaman belum Tersedia.
                             </div>
@@ -61,4 +64,14 @@
 
 @push('scripts')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function(){
+        $("#searchInput").on("keyup", function() {
+            var value = $(this).val().toLowerCase();
+            $("#peminjamanTable tbody tr").filter(function() {
+                $(this).toggle($(this).find("td:nth-child(2)").text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+    });
+</script>
 @endpush

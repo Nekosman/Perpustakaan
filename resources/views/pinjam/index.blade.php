@@ -8,8 +8,11 @@
 @section('content')
 <div class="card-body">
     <h3>Daftar Peminjaman Buku</h3>
+    <div class="mb-3">
+        <input type="text" id="searchInput" class="form-control" placeholder="Cari berdasarkan judul buku">
+    </div>
     <div class="table-responsive">
-        <table class="table table-bordered">
+        <table class="table table-bordered" id="peminjamanTable">
             <thead>
                 <tr>
                     <th scope="col">ID</th>
@@ -34,22 +37,28 @@
                         <td>{{ $pinjam->status }}</td>
                         <td class="text-center">
                             @if ($pinjam->status == 'pengajuan')
-                                <form method="POST" action="{{ route('admin.pinjam.accept', $pinjam->id) }}" style="display:inline;">
+                                <form method="POST" action="{{ route(Auth::user()->type == 'admin' ? 'admin.pinjam.accept' : 'petugas.pinjam.accept', $pinjam->id) }}" style="display:inline;">
                                     @csrf
                                     @method('PATCH')
                                     <button type="submit" class="btn btn-sm btn-success">Terima</button>
                                 </form>
 
-                                <form method="POST" action="{{ route('admin.pinjam.tolak', $pinjam->id) }}" style="display:inline;">
+                                <form method="POST" action="{{ route(Auth::user()->type == 'admin' ? 'admin.pinjam.tolak' : 'petugas.pinjam.tolak', $pinjam->id) }}" style="display:inline;">
                                     @csrf
                                     @method('PATCH')
                                     <button type="submit" class="btn btn-sm btn-danger">Tolak</button>
                                 </form>
 
-                                <form method="POST" action="{{ route('admin.pinjam.remove', $pinjam->id) }}" style="display:inline;">
+                                <form method="POST" action="{{ route(Auth::user()->type == 'admin' ? 'admin.pinjam.remove' : 'petugas.pinjam.remove', $pinjam->id) }}" style="display:inline;">
                                     @csrf
                                     @method('PATCH')
                                     <button type="submit" class="btn btn-sm btn-warning">Batalkan</button>
+                                </form>
+                            @endif
+                            @if($pinjam->status === 'menunggu persetujuan')
+                                <form action="{{ route('peminjaman.approveReturn', $pinjam->id) }}" method="POST">
+                                    @csrf
+                                    <button type="submit" class="btn btn-success">Setujui Pengembalian</button>
                                 </form>
                             @endif
                         </td>
@@ -71,4 +80,27 @@
 
 @push('scripts')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function() {
+        // Sort functionality by ID in descending order on load
+        var rows = $("#peminjamanTable tbody tr").get();
+        rows.sort(function(a, b) {
+            var keyA = parseInt($(a).find("td:first").text());
+            var keyB = parseInt($(b).find("td:first").text());
+
+            return keyB - keyA;
+        });
+        $.each(rows, function(index, row) {
+            $("#peminjamanTable tbody").append(row);
+        });
+
+        // Filter functionality
+        $("#searchInput").on("keyup", function() {
+            var value = $(this).val().toLowerCase();
+            $("#peminjamanTable tbody tr").filter(function() {
+                $(this).toggle($(this).find("td:nth-child(2)").text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+    });
+</script>
 @endpush
